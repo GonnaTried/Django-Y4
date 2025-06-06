@@ -1,3 +1,5 @@
+# models.py
+
 from enum import Enum
 
 from django.contrib.auth import get_user_model
@@ -69,15 +71,18 @@ class Task(models.Model):
     due_date = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
 
+    # Use distinct related_names
     user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="static_tasks"
+        get_user_model(), on_delete=models.CASCADE, related_name="tasks_created_by_user"
     )
 
+    # Use distinct related_names
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="static_tasks"
+        Category, on_delete=models.CASCADE, related_name="tasks_in_category"
     )
 
-    tags = models.ManyToManyField(Tag, related_name="static_tasks", blank=True)
+    # Use distinct related_names
+    tags = models.ManyToManyField(Tag, related_name="tasks_with_tag", blank=True)
 
     class Meta:
         ordering = ["-created_at"]
