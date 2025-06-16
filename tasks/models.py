@@ -18,6 +18,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def total_count(self):
+        return self.tasks.count()
+
 
 class Tag(models.Model):
     label = models.CharField(max_length=100)
@@ -56,6 +59,7 @@ class TaskStatus(Enum):
 class Task(models.Model):
     title = models.CharField(max_length=500)
     description = models.TextField(null=True, blank=True)
+    related_name = "tasks"
 
     status = models.CharField(
         max_length=15,

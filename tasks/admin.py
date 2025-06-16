@@ -6,7 +6,10 @@ from .models import Category, Tag, Task
 
 @admin.register(Category)  # This decorator is a concise way to register
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "hex_color")  # Fields to display in the list view
+    list_display = (
+        "name",
+        "hex_color",
+    )  # Fields to display in the list view
     search_fields = ("name",)  # Enable search by name
     list_filter = ("hex_color",)  # Enable filtering by hex_color if desired
 
