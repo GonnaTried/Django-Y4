@@ -1,4 +1,3 @@
-# your_app_name/serializers.py
 from rest_framework import serializers
 
 from .models import (  # Make sure to import Category and TaskStatus
@@ -14,22 +13,51 @@ class CategorySerializer(serializers.ModelSerializer):
 
     # If you want to show total tasks count in Category detail, keep this:
     total_tasks = serializers.SerializerMethodField(read_only=True)
+    # New: Add a field for the task count status
+    task_count_status = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Category
-        fields = ["id", "name", "hex_color", "total_tasks"]
+        # Add 'task_count_status' to the fields list
+        fields = ["id", "name", "hex_color", "total_tasks", "task_count_status"]
 
     def get_total_tasks(self, obj):
         # This will call the total_count method defined in your Category model
         return obj.total_count()
 
+    def get_task_count_status(self, obj):
+        """
+        Calls the model method to get the task count status for the category.
+        """
+        return obj.get_task_count_status()
+
 
 class TagSerializer(serializers.ModelSerializer):
     """Serializer for the Tag model."""
 
+    # New: Add a field for the total tasks count
+    total_tasks = serializers.SerializerMethodField(read_only=True)
+    # New: Add a field for the task count status
+    task_count_status = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Tag
-        fields = ["id", "label"]
+        # Add 'total_tasks' and 'task_count_status' to the fields list
+        fields = ["id", "label", "total_tasks", "task_count_status"]
+
+    def get_total_tasks(self, obj):
+        """
+        Calls the total_count method defined in your Tag model.
+        """
+        # Ensure total_count method exists on the Tag model
+        return obj.total_count()
+
+    def get_task_count_status(self, obj):
+        """
+        Calls the model method to get the task count status for the tag.
+        """
+        # Ensure get_task_count_status method exists on the Tag model
+        return obj.get_task_count_status()
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -43,6 +71,7 @@ class TaskSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
 
     # For reading (GET requests): display the full Category object
+    # This will now include 'task_count_status' from the CategorySerializer
     category = CategorySerializer(read_only=True)
     # For writing (POST/PUT/PATCH requests): allow client to send just the category ID
     # 'source=' points to the actual model field
@@ -51,6 +80,7 @@ class TaskSerializer(serializers.ModelSerializer):
     )
 
     # For reading (GET requests): display list of full Tag objects
+    # This will now include 'task_count_status' from the TagSerializer
     tags = TagSerializer(many=True, read_only=True)
     # For writing (POST/PUT/PATCH requests): allow client to send a list of tag IDs
     tag_ids = serializers.PrimaryKeyRelatedField(

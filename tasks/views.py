@@ -41,17 +41,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     A ViewSet for viewing and editing Category instances.
     """
 
-    # For Categories, you might want all users to see all categories,
-    # or you might filter them per user if categories are user-specific.
-    # Assuming they are global or only linked via tasks:
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     authentication_classes = [
         authentication.SessionAuthentication,
         authentication.TokenAuthentication,
     ]
-    # Adjust permissions based on whether categories are globally modifiable or only by staff/admin.
-    # For now, let's keep it simple for authenticated users:
     permission_classes = [permissions.IsAuthenticated]
 
 
@@ -60,7 +55,6 @@ class TagViewSet(viewsets.ModelViewSet):
     A ViewSet for viewing and editing Tag instances.
     """
 
-    # Same as categories, adjust queryset/permissions as needed for your app's logic.
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     authentication_classes = [
