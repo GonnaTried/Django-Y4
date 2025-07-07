@@ -13,13 +13,14 @@ class Category(models.Model):
     hex_color = models.CharField(max_length=7, null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "Categories"  # Nicer name in admin
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
 
     def total_count(self):
-        return self.tasks.count()
+        # FIX: Use the correct related_name 'tasks_in_category'
+        return self.tasks_in_category.count()
 
 
 class Tag(models.Model):
