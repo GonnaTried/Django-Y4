@@ -1,0 +1,24 @@
+#create new user
+#header http://127.0.0.1:8000/api/auth/users/
+
+#body
+{
+    "email": "your_real@gmail.com",
+    "password": "strongPassword123",
+    "first_name": "Test",
+    "last_name": "User"
+}
+
+
+#activate new user
+#in your email will have this link http://127.0.0.1:8000/activate/Mw/cxghpy-0da9dee29cc6469a78dfe5fa893886bf
+
+#header http://127.0.0.1:8000/api/auth/users/activation/
+
+#body
+{
+    "uid": "Mw",
+    "token": "cxghpy-0da9dee29cc6469a78dfe5fa893886bf"
+}
+
+!! importance you have to have send gmail working
