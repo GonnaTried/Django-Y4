@@ -24,12 +24,5 @@ urlpatterns = [
     path("api/", include("tasks.urls")),
     path("api/auth/", include("djoser.urls")),
     path("api/auth/", include("djoser.urls.authtoken")),
-<<<<<<< HEAD
-<<<<<<< HEAD
-    path('payment/', include('payments.urls')),
-    
-=======
->>>>>>> 00caa2f1be446b8f4ddf8393bcc5fb4f8fff8931
-=======
->>>>>>> 00caa2f1be446b8f4ddf8393bcc5fb4f8fff8931
+    path("payment/", include("payments.urls")),
 ]

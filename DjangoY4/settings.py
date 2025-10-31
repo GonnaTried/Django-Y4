@@ -36,12 +36,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("GMAIL_APP_PASSWORD")
-<<<<<<< HEAD
 
-STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-=======
->>>>>>> 00caa2f1be446b8f4ddf8393bcc5fb4f8fff8931
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
 
 # Application definition
 
@@ -60,7 +57,7 @@ INSTALLED_APPS = [
     "static",
     "tasks",
     "accounts",
-    'payments', 
+    "payments",
 ]
 
 MIDDLEWARE = [
