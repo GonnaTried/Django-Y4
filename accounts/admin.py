@@ -1,69 +1,52 @@
-# accounts/admin.py
+# accounts/admin.py - (THE NEW, CORRECT CODE)
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import Profile
+from .models import User  # <-- Import your new custom User model
 
 
-# Define an inline admin descriptor for Profile model
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-    verbose_name_plural = "profile"
-    fields = (
-        "phone_number",
-        "address",
+class CustomUserAdmin(UserAdmin):
+    # These are the fields that will be displayed in the list view of the admin
+    list_display = ("email", "first_name", "last_name", "is_staff", "phone_number")
+
+    # These are the fields that can be searched
+    search_fields = ("email", "first_name", "last_name")
+
+    # The fields are ordered in fieldsets for the detail view
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "phone_number", "address")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
 
-
-# Define a new User admin
-class CustomUserAdmin(BaseUserAdmin):
-    form = CustomUserChangeForm
-    add_form = CustomUserCreationForm
-
-    inlines = (ProfileInline,)
-
-    list_display = BaseUserAdmin.list_display + (
-        "get_phone_number",
-        "get_address",
-    )
-
-    def get_phone_number(self, obj):
-        return obj.profile.phone_number if hasattr(obj, "profile") else ""
-
-    get_phone_number.short_description = "Phone Number"
-    get_phone_number.admin_order_field = "profile__phone_number"
-
-    def get_address(self, obj):
-        return obj.profile.address if hasattr(obj, "profile") else ""
-
-    get_address.short_description = "Address"
-    get_address.admin_order_field = "profile__address"
-
-    # --- NEW ADDITION START ---
-    # We must explicitly define add_fieldsets to match the fields provided by CustomUserCreationForm
-    # This replaces the default add_fieldsets from BaseUserAdmin
+    # These fields will be displayed when creating a new user
     add_fieldsets = (
         (
             None,
             {
                 "classes": ("wide",),
-                "fields": (
-                    "username",
-                    "email",
-                    "first_name",
-                    "last_name",
-                    "password",
-                    "password2",
-                ),
+                "fields": ("email", "password", "password2"),
             },
         ),
     )
-    # --- NEW ADDITION END ---
+
+    ordering = ("email",)
 
 
-# Re-register UserAdmin
-admin.site.unregister(User)
+# Register your custom User model with the custom admin class
 admin.site.register(User, CustomUserAdmin)

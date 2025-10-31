@@ -1,0 +1,3 @@
+test stripe payment card number 
+4242 4242 4242 4242
+Expt Date any date in the futrue and CVV is random 3 digit

@@ -1,11 +1,25 @@
+from django.contrib.auth import get_user_model
+from djoser.serializers import UserCreateSerializer
 from rest_framework import serializers
 
-from .models import (  # Make sure to import Category and TaskStatus
-    Category,
-    Tag,
-    Task,
-    TaskStatus,
-)
+from .models import Category, Tag, Task, TaskStatus
+
+User = get_user_model()
+
+
+class CustomUserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ("id", "email", "username", "password")
+
+    def create(self, validated_data):
+        # Set the username to be the same as the email
+        # This satisfies the User model's requirement for a username
+        if "username" not in validated_data or not validated_data["username"]:
+            validated_data["username"] = validated_data["email"]
+
+        user = super().create(validated_data)
+        return user
 
 
 class CategorySerializer(serializers.ModelSerializer):

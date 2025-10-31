@@ -1,0 +1,103 @@
+<!-- payments/templates/payments/amount_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Set Payment Amount</title>
+
+    <!-- 💥 New CSS for a clean, modern look 💥 -->
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background-color: #f7f9fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #333;
+      }
+
+      .container {
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      h1 {
+        color: #1a237e; /* Dark blue heading */
+        margin-bottom: 30px;
+        font-size: 1.5rem;
+      }
+
+      label {
+        display: block;
+        text-align: left;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      input[type="number"]:focus {
+        border-color: #4caf50; /* Green focus highlight */
+        outline: none;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+      }
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #4caf50; /* Green button */
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Set Amount for Assignment Payment</h1>
+
+      <form method="POST" action="{% url 'checkout' %}">
+        {% csrf_token %}
+
+        <label for="amount">Enter Amount (in USD):</label>
+
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          value="10.00"
+          min="0.50"
+          step="0.01"
+          required
+        />
+
+        <button type="submit">Proceed to Stripe Payment</button>
+      </form>
+    </div>
+  </body>
+</html>
